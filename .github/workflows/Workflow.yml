@@ -1,10 +1,7 @@
 name: CI
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: push
+
 env:
   MONGO_HOST: cluster0.xoosk6b.mongodb.net
   MONGO_DB: "DataCraft_DB"
@@ -13,28 +10,40 @@ env:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: get code
         uses: actions/checkout@v4
-
-      - name: Set up Python
+      - name: install Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Install dependencies
+      - name: setup requirements
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
       - name: Run tests
         run: pytest
-      
-  deploy:
+
+  Build:
     needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v7
+      - name: cashing step
+        uses: actions/cash@v4
+        with:
+          path: ~/.cache/pip
+          key: req-${{ hashFiles('requirements.txt') }}
+      - name: setup requirements
+        uses: pip insatall -r requirements.txt
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+
+  deploy:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - name: get code 
