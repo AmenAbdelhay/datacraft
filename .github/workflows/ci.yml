@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+env:
+  MONGO_HOST: cluster0.xoosk6b.mongodb.net
+  MONGO_DB: "DataCraft_DB"
+  MONGO_USER: 420231112_db_user
+  MONGO_PASSWORD: Nfr2STqUutWr5drR
 
 jobs:
   test:
@@ -27,3 +32,6 @@ jobs:
 
       - name: Run tests
         run: pytest
+      
+      - name: deploy to mongo 
+        run: python Deploy_to_mongo.py
