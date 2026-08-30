@@ -33,5 +33,17 @@ jobs:
       - name: Run tests
         run: pytest
       
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code 
+        uses: actions/checkout@v7
+      - name: insatall python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: setup requirements
+        run: pip install -r requirements.txt
       - name: deploy to mongo 
         run: python Deploy_to_mongo.py
