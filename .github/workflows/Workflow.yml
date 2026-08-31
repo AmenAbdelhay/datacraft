@@ -6,23 +6,25 @@ env:
   MONGO_HOST: cluster0.xoosk6b.mongodb.net
   MONGO_DB: "DataCraft_DB"
   MONGO_USER: 420231112_db_user
-  MONGO_PASSWORD: Nfr2STqUutWr5drR
+  MONGO_PASSWORD: Nfr2STqUutWr5drR # يفضل جداً نقل هذه للـ GitHub Secrets
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: get code
         uses: actions/checkout@v4
+        
       - name: install Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          
       - name: setup requirements
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          
       - name: Run tests
         run: pytest
 
@@ -31,28 +33,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: get code
-        uses: actions/checkout@v7
-      - name: cashing step
-        uses: actions/cash@v4
+        uses: actions/checkout@v4
+        
+      - name: caching step
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: req-${{ hashFiles('requirements.txt') }}
+          
+      - name: install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: setup requirements
-        uses: pip insatall -r requirements.txt
+        run: pip install -r requirements.txt
+        
+      - name: run build script # خطوة هامة لتوليد الملفات قبل رفعها
+        run: python test/build_output.py
+
       - name: upload artifact
         uses: actions/upload-artifact@v4
+        with:
+          name: built-csv-files
+          path: artifact/
 
   deploy:
     needs: Build
     runs-on: ubuntu-latest
     steps:
       - name: get code 
-        uses: actions/checkout@v7
-      - name: insatall python
-        uses: actions/setup-python@v6
+        uses: actions/checkout@v4
+        
+      - name: install python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          
       - name: setup requirements
         run: pip install -r requirements.txt
+        
       - name: deploy to mongo 
         run: python Deploy_to_mongo.py

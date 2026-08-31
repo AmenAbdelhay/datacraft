@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent / "Dag"))
+sys.path.insert(0, str(Path(__file__).parent / "dag"))
 
 from transformations import clean_sales, aggregate_by_category
 import pandas as pd
