@@ -39,7 +39,6 @@ jobs:
       - name: Run Tests
         run: pytest test/
 
-
   build:
     name: Build Project
     needs: test
