@@ -1,4 +1,4 @@
-from airflow import DAG
+from airflow import Dag
 from airflow.operators.python import PythonOperator
 from datetime import datetime
 
@@ -7,7 +7,7 @@ def run_etl():
     print("ETL pipeline is running...")
 
 
-with DAG(
+with Dag(
     dag_id="simple_etl",
     start_date=datetime(2026, 1, 1),
     schedule=None,

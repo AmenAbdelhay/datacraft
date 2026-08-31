@@ -25,6 +25,12 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
+      - name: cacheing 
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cash_2
+
       - name: Install Requirements
         run: |
           python -m pip install --upgrade pip
@@ -50,6 +56,12 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
+      - name: cacheing 
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cash_2
+      
       - name: Install Requirements
         run: |
           python -m pip install --upgrade pip
@@ -63,7 +75,6 @@ jobs:
         with:
           name: built-csv-files
           path: artifact/
-
 
   deploy:
     name: Deploy to MongoDB
@@ -80,6 +91,12 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
+
+      - name: cacheing 
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cash_2
 
       - name: Install Requirements
         run: |
